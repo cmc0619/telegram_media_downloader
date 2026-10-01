@@ -66,3 +66,6 @@ config.yaml
 
 # Database
 downloads.sqlite3
+
+# Docker volume (config, session, downloads)
+data/

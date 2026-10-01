@@ -1,0 +1,36 @@
+# Docker config: download every image from one channel.
+# Copy to data/config.yaml and fill in the three values marked below.
+
+api_id: 1234567          # <- from https://my.telegram.org/apps
+api_hash: your_api_hash  # <- from https://my.telegram.org/apps
+
+chats:
+  - chat_id: your_channel  # <- channel @username (without @) or numeric id like -1001234567890
+    last_read_message_id: 0
+    ids_to_retry: []
+
+# "photo" is pictures sent normally (compressed).
+# "document" filtered to image formats catches pictures sent "as file" (original quality).
+# Note: webp also matches stickers; remove it if the channel posts stickers you don't want.
+media_types:
+  - photo
+  - document
+file_formats:
+  document:
+    - jpeg
+    - jpg
+    - png
+    - webp
+    - gif
+    - heic
+    - bmp
+    - tiff
+
+download_directory: /data/downloads
+start_date: null
+end_date: null
+max_messages: null
+
+# Go easy on Telegram to avoid flood-wait limits on your account.
+max_concurrent_downloads: 2
+download_delay: [1, 5]

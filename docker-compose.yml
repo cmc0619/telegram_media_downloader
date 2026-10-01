@@ -1,0 +1,12 @@
+services:
+  downloader:
+    build: .
+    image: telegram-media-downloader
+    # Owner of the files in ./data. 99:100 is Unraid's nobody:users; elsewhere use `id -u`:`id -g`.
+    user: "99:100"
+    volumes:
+      - ./data:/data
+    # Needed for the one-time Telegram login prompt (phone, code, 2FA password).
+    stdin_open: true
+    tty: true
+    stop_grace_period: 60s

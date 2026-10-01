@@ -287,6 +287,32 @@ You can specify a custom download directory by setting the `download_directory` 
 
 If the specified directory doesn't exist, it will be automatically created. The media type subdirectories (audio/, photo/, etc.) will still be created within your custom directory.
 
+## Docker
+The CLI also runs in a container. Everything it keeps (config, Telegram login session, download history and the downloaded files) lives in `./data`.
+
+1. Get your `api_id`/`api_hash` and the channel's chat id or username (see [Getting your API Keys](#setup-configuration) above).
+2. Create the config:
+   ```sh
+   mkdir -p data
+   cp config.docker.yaml.example data/config.yaml
+   chown -R 99:100 data
+   ```
+   The container runs as the `user:` set in `docker-compose.yml` (`99:100`, Unraid's `nobody:users`), so `data/` must be writable by that user. On other Linux hosts, set `user:` and the `chown` to your own `id -u`:`id -g`.
+   Fill in `api_id`, `api_hash` and `chat_id` in `data/config.yaml`. The example downloads images only: `photo` for pictures sent normally, and `document` limited to image formats for pictures sent "as file".
+3. First run is interactive, to log in to Telegram (phone number, login code, and 2FA password if you have one):
+   ```sh
+   docker compose run --rm downloader
+   ```
+   The login is saved to `data/media_downloader.session`, so later runs don't ask again.
+4. Later runs pick up where the last one stopped:
+   ```sh
+   docker compose up
+   ```
+
+Images are saved to `data/downloads/photo/` and `data/downloads/document/`. Stopping with Ctrl+C or `docker compose stop` saves progress to `data/config.yaml` (the downloader rewrites this file, which drops its comments).
+
+> **Note**: `data/media_downloader.session` is a full login to your Telegram account. Keep it private.
+
 ## Proxy
 `socks4, socks5, http` proxies are supported in this project currently. To use it, add the following to the bottom of your `config.yaml` file
 
