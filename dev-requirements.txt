@@ -1,5 +1,5 @@
 black==25.11.0
-isort==6.1.0
+isort==9.0.2
 mock==5.2.0
 mypy==1.19.1
 pre-commit==4.3.0
