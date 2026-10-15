@@ -1,1 +1,1 @@
-nicegui>=1.4.0; python_version >= "3.10"
+nicegui>=3.18.0; python_version >= "3.10"
